@@ -1,0 +1,16 @@
+name: 'Composite always'
+runs:
+  using: "composite"
+  steps:
+    - run: echo 'Ready to wait!'
+      shell: bash
+    - run: sleep 20    
+      shell: bash
+    - run: echo 'Slept for 20'
+      shell: bash
+    - run: echo 'cancelled job is ${{ github.action_status }}'
+      shell: bash
+      if: cancelled() # runs only if workflow is cancelled
+    - run: echo 'always, job is ${{ github.action_status }}'
+      shell: bash
+      if: always() # runs always if the step calling this action runs
