@@ -1,0 +1,21 @@
+name: Always In Composite
+on: [push, workflow_dispatch]
+jobs:
+  always-composite:  
+    runs-on: ubuntu-latest
+    steps:
+    - name: Work for 15 seconds
+      run: sleep 15
+      
+    - name: Echo job status
+      run: echo 'job is ${{ job.status }}'
+      
+      # composite action invoked with 'if: always()'
+    - uses: fhammerl/always-composite/composite@main
+      if: always() # 'always()' steps in the composite action will run even if the workflow is cancelled
+
+      # composite action invoked with default condition (same as 'if: success()')
+    - uses: fhammerl/always-composite/composite@main # will NEVER execute any steps if the workflow is cancelled or failing, no matter their conditions
+
+    - name: Echo job status
+      run: echo 'job is ${{ job.status }}'
